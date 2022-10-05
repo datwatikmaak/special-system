@@ -4,9 +4,12 @@ from typing import List
 
 def tail(filepath: Path, n: int) -> List[str]:
     """
-    Similate Unix' "tail -n" command:
+    Similate Unix "tail -n" command:
     - Read in the file ("filepath").
     - Parse it into a list of lines, stripping trailing newlines.
     - Return the last "n" lines.
     """
-    pass
+    with open(filepath) as file:
+        content = file.read().splitlines()
+
+    return content[-n:]
