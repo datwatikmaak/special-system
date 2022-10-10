@@ -36,7 +36,15 @@ def gen_files(tempfile=tempfile):
     => Here you would return 03/mridubhatnagar (lowercased!)
        followed by 03/aleksandarknezevic
     """
-    pass
+    with open(tempfile, "r") as f:
+        content = f.readlines()
+
+    d_names = list(d.split(",")[0].lower() for d in content if d.split(",")[-1] == "True\n")
+
+    return d_names
+
+
+gen_files(tempfile)
 
 
 def diehard_pybites(files=None):
@@ -53,7 +61,14 @@ def diehard_pybites(files=None):
     if files is None:
         files = gen_files()
 
-    users = Counter()
-    popular_challenges = Counter()
-
     # your code
+    usernames = [username.split("/")[1] for username in files if username.split("/")[1] not in IGNORE]
+    challenges = [challenge.split("/")[0] for challenge in files if challenge.split("/")[1] not in IGNORE]
+
+    users = Counter(usernames)
+    popular_challenges = Counter(challenges)
+
+    return Stats(user=users.most_common(1)[0][0], challenge=popular_challenges.most_common(1)[0])
+
+
+diehard_pybites(files=None)
